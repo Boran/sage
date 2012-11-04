@@ -13,7 +13,11 @@ config.inc: Configuration file
 sage1.php: explore Sage tables via ODBC, print out the list of tables, fields, and data.
 
 sage2.php: Dump all tables from sage ODBC and write them to a mysql database.
-sage3.php: As sage2.php, but abstract funtons to funcs.inc
+           This is a hacked/corrected found of an example found on the net.
+
+
+sage3.php: Sync specific tables from sage via ODBC to a mysql database.
+           uses funcs.inc
 
 
 Scripts for updating Take5 accounts tables:
