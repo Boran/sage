@@ -18,13 +18,12 @@
  * tested with php 5.3.18 and Sage 50 accounts 2013.
  */
  
-// configuration 
-$currentTable='SALES_LEDGER';
-$srcKeyname='ACCOUNT_REF';
-$odbc['dsn'] = "SageLine50v19";
-$odbc['user'] = "manager";
-$odbc['pass'] = "";
+require_once('config.inc');
+require_once('funcs.inc');    // connfig functions 
 
+// configuration 
+$srcTable='SALES_LEDGER';
+$srcKeyname='ACCOUNT_REF';
 $destTable='asalmas';
 $destKeyName='ACCOUNT';
 $mysql['host'] = "localhost";
@@ -33,60 +32,20 @@ $mysql['pass'] = "";
 $mysql['dbname'] = "boranpla";
 
 
-// Connect to the source ODBC and target mysql database
-if ($debug) echo "Connect to " . $odbc['dsn'] . ' as ' . $odbc['user'] . "\n";
-$conn = odbc_connect($odbc['dsn'], $odbc['user'], $odbc['pass']);
-if (!$conn) {
-    die("Error connecting to the ODBC database: " . odbc_errormsg());
-}
+// Connect to Sage and grab the source table data
+$fields=array(); $results=array();
+$debug=0;
+sage_get($srcTable, $debug, $fields, $results);
+//print_r($fields);   // to show the field structure  
+//print_r($results);    // to print out the data per record
+//print_r($results[0]);   // print first row
 
+// 1. Connect to he destnaton     
 $myconn = mysql_connect($mysql['host'], $mysql['user'], $mysql['pass']);
 if (!$myconn)
   die("Error connecting to the MySQL database: " . $mysql_error());
 if (!mysql_select_db($mysql['dbname'], $myconn))
   die("Error selecting the database: " . $mysql_error());
-  
-// 1. Get the source structure and data
-  echo ($currentTable);
-  // get first, or all entries in the table.
-    $sql = "SELECT * FROM " . $currentTable;   // TODO: grab all records
-    //$sql = "SELECT TOP 1 * FROM " . $currentTable;  // grab just first record
-    $r = odbc_exec($conn, $sql);
-    if (!$r) {
-      die("Error: " . $currentTable . "\n" . odbc_errormsg());
-    }
-        
-    // how many fields and rows has the table?
-    $maxfields=odbc_num_fields($r);
-    echo ", fields=". $maxfields . ", rows=" . odbc_num_rows($r) . "\n"; 
-    if (odbc_num_rows($r)==0)   // if no rows, dont go looking for data _or_ fields
-      continue;   
-
-    // Get all the field names and store in an array $fields
-    if ($maxfields>3) {
-      $maxfields=$maxfields-3;   // TODO: why this is needed, php crashes otherise
-    }  
-    $ignores=array('DATE_ACCOUNT_OPENED',);  // TODO: if there are fields not to show
-    for ($i = 1; $i <= $maxfields; $i++) {
-      //echo "\nfield " . $i . odbc_field_name($r, $i) . " type=" . odbc_field_type($r, $i);
-      if (! in_array(odbc_field_name($r, $i), $ignores)) 
-         $fields[odbc_field_name($r, $i)] = odbc_field_type($r, $i);
-         //else 
-         //  echo "Ignore: " . odbc_field_name($r, $i);
-      }   
-      //print_r($fields);   // to show the field structure  
-        
-     // for each row store data in array $results indexed by fieldname
-     $x = 0;
-     while ($row = odbc_fetch_row($r)) {
-       for ($i = 1; $i <= odbc_num_fields($r); $i++)
-         if (! in_array(odbc_field_name($r, $i), $ignores)) 
-           $results[$x][odbc_field_name($r, $i)] = odbc_result($r, $i);
-           $x++;
-     }
-     //print_r($results);    // to print out the data per record
-     //print_r($results[0]);   // print first row
-     
 
 // 2. Loop through the data and update the target        
   for ($i = 0; $i <= sizeof($results) -1; $i++) {
