@@ -95,10 +95,8 @@ $tablesArray = array('SALES_LEDGER',);
 if (!empty($tablesArray)) {
     foreach ($tablesArray as $currentTable) {
       echo "Table " . $currentTable;
-
-    	
+	
       // get first, or all entries in the table.
-        if ($debug) echo ($currentTable);
         $sql = "SELECT * FROM " . $currentTable;   // TODO: grab all records
         //$sql = "SELECT TOP 1 * FROM " . $currentTable;  // grab just first record
         $r = odbc_exec($conn, $sql);
@@ -108,7 +106,7 @@ if (!empty($tablesArray)) {
 
         // how many fields and rows has the table?
         $maxfields=odbc_num_fields($r);
-        echo ", fields=". $maxfields . ", rows=" . odbc_num_rows($r) . "\n"; 
+        echo ", fields=". $maxfields . ", rows=" . odbc_num_rows($r) ; 
         if (odbc_num_rows($r)==0)   // if no rows, dont go looking for data _or_ fields
           continue;   
 
@@ -173,11 +171,11 @@ if (!empty($tablesArray)) {
         reset($fields);
         $sql.= "\nPRIMARY KEY (" . $mysql['idfield'] . 
           ") )\nENGINE = innoDB\nDEFAULT CHARSET=latin1\nCOLLATE=latin1_general_ci;\n";
-          // TODO: maybe somepeople want myisam -)
+          // TODO: maybe some people want myisam or other encodeing ?
         $r = mysql_query($sql, $myconn);
         if (!$r)
             die("Error creating new table (" . $currentTable . ") on database (" . $mysql['dbname'] . ") : " . mysql_error());
-        echo "Table OK\n";
+        echo ". OK\n";
 
         //print_r($sql);    exit;
 
@@ -235,7 +233,8 @@ if (!empty($tablesArray)) {
             }
             $sqlb = rtrim($sqlb, ", \n\r\t");
             if ($update) {
-                $sqlb.= " WHERE " . $mysql['idfield'] . " = " . $i;            } 
+                $sqlb.= " WHERE " . $mysql['idfield'] . " = " . $i;            
+            } 
             else {
             	  //echo $sqlb . "\n";
             }   
@@ -247,8 +246,8 @@ if (!empty($tablesArray)) {
      
         }
 
-        echo "Completed Import of table " . $currentTable . "\n";
+        echo "Completed Import of " . $currentTable;
     }
 }
-// Complete: And that is it!
+
 ?>
