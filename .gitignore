@@ -1,3 +1,6 @@
 .htaccess
+*.bak
+test.php
+1.txt
 
 
