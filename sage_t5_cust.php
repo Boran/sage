@@ -1,14 +1,15 @@
 <?
 /** sage_t5_cust.php
  *
- * Read custom files from sage and update a Take5 customer
+ * Read the customer table from sage and update a Take5 customer
  * table in mysql
  *
  * Author: Sean Boran on github. License GPL.
  *
  * Requirements: 
  * A Windows box with Sage, Sage ODBC and PHP with mysql libraries.
- * Sage DSN must be points to actual data (e.g. the demo company)
+ * Sage DSN must be points to actual data (e.g. the demo company).
+ * A mysql table called asalmas, with he Take5 Acounting structure.
  * tested with php 5.3.18 and Sage 50 accounts 2013.
  */
  

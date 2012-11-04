@@ -1,10 +1,10 @@
 <?
 
-/** sage.php
+/** sage1.php
  *
- * Script to explorer Sage tables via ODBC, print out the list of tables, fields, 
- * and data
- * Look at he sources, and enable the various print statement to see more and
+ * Script to explore Sage tables via ODBC, print out the list of tables, fields, 
+ * and data.
+ * Look at the sources, and enable the various print statement to see more and
  * more detail.
  *
  * Author: Sean Boran on github. License GPL.
