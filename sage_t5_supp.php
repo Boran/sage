@@ -87,8 +87,7 @@ if (!mysql_select_db($mysql['dbname'], $myconn))
       ."VATREG='"   .substr(mysql_real_escape_string($results[$i]['VAT_REG_NUMBER']),0,18) ."', "
       ."WEB='"      .substr(mysql_real_escape_string($results[$i]['WEB_ADDRESS']),0,120) ."' "
       //."LASTINVO='" .$results[$i]['LAST_INV_DATE'] ."' "
-      ;
-                  
+      . $where;         
                   
      //echo "$sqlb \n";
      $r = mysql_query($sqlb, $myconn);

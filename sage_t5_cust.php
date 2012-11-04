@@ -49,7 +49,7 @@ if (!mysql_select_db($mysql['dbname'], $myconn))
   	  continue;  	  
     $srcKey=$results[$i][$srcKeyname];
  	
-    // Does the source row exist n the arget?	    
+    // Does the source row exist n the target?	    
   	$sql = "SELECT $destKeyName FROM $destTable WHERE $destKeyName = '" . $srcKey . "';";
     $r = mysql_query($sql, $myconn);
     if (!$r)
@@ -86,18 +86,17 @@ if (!mysql_select_db($mysql['dbname'], $myconn))
       ."EMAIL2='"   .substr(mysql_real_escape_string($results[$i]['E_MAIL3']),0,60) ."', "
       ."VATREG='"   .substr(mysql_real_escape_string($results[$i]['VAT_REG_NUMBER']),0,18) ."', "
       ."WEB='"      .substr(mysql_real_escape_string($results[$i]['WEB_ADDRESS']),0,120) ."', "
-      ."LASTINVO='" .$results[$i]['LAST_INV_DATE'] ."' ";
-                  
-                  
+      ."LASTINVO='" .$results[$i]['LAST_INV_DATE'] ."' "
+      . $where;
+                              
      //echo "$sqlb \n";
      $r = mysql_query($sqlb, $myconn);
      if (!$r)
        echo "Error row $i: " . $results[$i][$srcKeyname] . ": ". mysql_error() . "\n";
-       
      if (mysql_affected_rows($myconn)>0)
        echo "$msg $srcKey";
      else 
-       echo "ignored $srcKey";   // TODO: so insert a new record!
+       echo "no change $srcKey";   // record updated but no fields changed
      echo "\n";
      
    }
