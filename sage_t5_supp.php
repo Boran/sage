@@ -1,7 +1,7 @@
 <?
-/** sage_t5_cust.php
+/** sage_t5_supp.php
  *
- * Read the customer table from sage and update a Take5 customer in mysql
+ * Read the Supplier table from sage and update a Take5 table in mysql
  *
  * Records are keyed by $srcKeyname, if a record does not exist in the target
  * it is created. The destination table must exist already.
@@ -22,9 +22,9 @@ require_once('config.inc');
 require_once('funcs.inc');    // common functions 
 
 // configuration 
-$srcTable='SALES_LEDGER';
+$srcTable='PURCHASE_LEDGER';
 $srcKeyname='ACCOUNT_REF';
-$destTable='asalmas';
+$destTable='apurmas';
 $destKeyName='ACCOUNT';
 
 
@@ -85,8 +85,9 @@ if (!mysql_select_db($mysql['dbname'], $myconn))
       ."EMAIL1='"   .substr(mysql_real_escape_string($results[$i]['E_MAIL2']),0,60) ."', "
       ."EMAIL2='"   .substr(mysql_real_escape_string($results[$i]['E_MAIL3']),0,60) ."', "
       ."VATREG='"   .substr(mysql_real_escape_string($results[$i]['VAT_REG_NUMBER']),0,18) ."', "
-      ."WEB='"      .substr(mysql_real_escape_string($results[$i]['WEB_ADDRESS']),0,120) ."', "
-      ."LASTINVO='" .$results[$i]['LAST_INV_DATE'] ."' ";
+      ."WEB='"      .substr(mysql_real_escape_string($results[$i]['WEB_ADDRESS']),0,120) ."' "
+      //."LASTINVO='" .$results[$i]['LAST_INV_DATE'] ."' "
+      ;
                   
                   
      //echo "$sqlb \n";

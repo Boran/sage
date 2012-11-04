@@ -7,17 +7,24 @@ The Sage line 50 is a (very) closed Accounting System, but it does have an ODBC 
 
 The scripts pull data out of Sage to updte a mysql database. there are varying complexities of scripts, start off with sage1.hp to understand how it woorks.
 
-sage1.php:
-explore Sage tables via ODBC, print out the list of tables, fields, and data.
-
-sage2.php:
-Dump all tables from sage ODBC and write them to a mysql database.
-
 funcs.inc: Library of common functions.
-
 config.inc: Configuration file
 
-sage_t5_cust.php:
-Read the customer table from sage and update a Take5 customer table in mysql.
+sage1.php: explore Sage tables via ODBC, print out the list of tables, fields, and data.
+
+sage2.php: Dump all tables from sage ODBC and write them to a mysql database.
+sage3.php: As sage2.php, but abstract funtons to funcs.inc
+
+
+Scripts for updating Take5 accounts tables:
+
+  sage_t5_cust.php: 
+  Read the customer table from sage and update a Take5 customer table in mysql.
+
+  sage_t5_supp.php.php: 
+  Read the supplier table from sage and update a Take5 purmas table in mysql.
+ 
+  sage_t5_nom.php.php: 
+  Read the nominal table from sage and update a Take5 purmas table in mysql.
  
 

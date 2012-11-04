@@ -11,5 +11,12 @@ $odbc['dsn'] = "SageLine50v19";
 $odbc['user'] = "manager";
 $odbc['pass'] = "";
 
+// mysql destination
+$mysql['host'] = "localhost";
+$mysql['user'] = "root";
+$mysql['pass'] = "";
+$mysql['dbname'] = "boranpla";
+
+
 
 ?>

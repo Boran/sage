@@ -16,13 +16,38 @@
 require_once('config.inc');   // site specific settings like $odbc
 
 
+/**
+ * sage_getTableNames()
+ * Input: $odbc (global), debug (0 or if >1 exho ebug messages)
+ * Output: $felds has structure, $results has the data
+ */
+function sage_getTableNames($table, $debug, &$results)
+{  
+	global $odbc;
+	
+  // Connect to the source ODBC
+  if ($debug>0) echo "Connect to " . $odbc['dsn'] . ' as ' . $odbc['user'] . "\n";
+  $conn = odbc_connect($odbc['dsn'], $odbc['user'], $odbc['pass']);
+  if (!$conn) {
+    die("Error connecting to the ODBC database: " . odbc_errormsg());
+  }
+  
+  $allTables = odbc_tables($conn);
+  while (odbc_fetch_row($allTables)) {
+    if (odbc_result($allTables, "TABLE_TYPE") == "TABLE") {
+        $results[] = odbc_result($allTables, "TABLE_NAME");
+    }
+  }
+}
+
+  
 
 /**
- * sage_get()
+ * sage_getTable()
  * Input: $odbc (global), table name, debug (0 or if >1 exho ebug messages)
  * Output: $felds has structure, $results has the data
  */
-function sage_get($table, $debug, &$fields, &$results)
+function sage_getTable($table, $debug, &$fields, &$results)
 {  
 	global $odbc;
 	
