@@ -70,7 +70,7 @@ $myconn = mysql_connect($mysql['host'], $mysql['user'], $mysql['pass']);
 if (!$myconn)
   die("Error connecting to the MySQL database: " . $mysql_error());
 if (!mysql_select_db($mysql['dbname'], $myconn))
-  die("Error selecting the database: " . $mysql_error());
+  die("Error selecting the database: " . mysql_error());
 
 
 // Step 1.5: loop through each table with steps 2-7
