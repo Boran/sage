@@ -17,7 +17,9 @@
  * tested with php 5.3.18 and Sage 50 accounts 2013.
  */
 
-$odbc['dsn'] = "SageLine50v19";
+$odbc['dsn'] = "SageLine50v19"; 
+// pointing to C:\Documents and Settings\All Users\Application Data\Sage\Accounts\2013\Demodata\ACCDATA
+//$odbc['dsn'] = "sagedemo";
 $odbc['user'] = "manager";
 $odbc['pass'] = "";
 
@@ -56,6 +58,7 @@ if (!empty($tablesArray)) {  // loop though each table
         // how many fields and rows has the table?
         $maxfields=odbc_num_fields($r);
         echo ", fields=". $maxfields . ", rows=" . odbc_num_rows($r) . "\n"; 
+
         if (odbc_num_rows($r)==0)   // if no rows, dont go looking for data _or_ fields
           continue;   
      
@@ -90,3 +93,4 @@ if (!empty($tablesArray)) {  // loop though each table
 }
 echo ".\n";
 ?>
+
