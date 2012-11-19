@@ -23,8 +23,7 @@ require_once('config.inc');   // site specific settings like $odbc
  */
 function sage_getTableNames($table, $debug, &$results)
 {  
-	global $odbc;
-	
+  global $odbc;
   // Connect to the source ODBC
   if ($debug>0) echo "Connect to " . $odbc['dsn'] . ' as ' . $odbc['user'] . "\n";
   $conn = odbc_connect($odbc['dsn'], $odbc['user'], $odbc['pass']);
@@ -44,13 +43,12 @@ function sage_getTableNames($table, $debug, &$results)
 
 /**
  * sage_getTable()
- * Input: $odbc (global), table name, debug (0 or if >1 exho ebug messages)
+ * Input:  $odbc (global), table name, debug (0 or if >1 echo debug messages)
  * Output: $felds has structure, $results has the data
  */
 function sage_getTable($table, $debug, &$fields, &$results)
 {  
-	global $odbc;
-	
+  global $odbc;
   // Connect to the source ODBC
   if ($debug>0) echo "Connect to " . $odbc['dsn'] . ' as ' . $odbc['user'] . "\n";
   $conn = odbc_connect($odbc['dsn'], $odbc['user'], $odbc['pass']);
@@ -61,7 +59,7 @@ function sage_getTable($table, $debug, &$fields, &$results)
   // 1. Get the source structure and data
   if ($debug>0) echo ($table);
   // get first, or all entries in the table.
-    $sql = "SELECT * FROM " . $table;   // TODO: grab all records
+    $sql = "SELECT * FROM " . $table;   // grab all records
     //$sql = "SELECT TOP 1 * FROM " . $table;  // grab just first record
     $r = odbc_exec($conn, $sql);
     if (!$r) {
@@ -71,8 +69,10 @@ function sage_getTable($table, $debug, &$fields, &$results)
     // how many fields and rows has the table?
     $maxfields=odbc_num_fields($r);
     if ($debug>0) echo ", fields=". $maxfields . ", rows=" . odbc_num_rows($r) . "\n"; 
-    if (odbc_num_rows($r)==0)   // if no rows, dont go looking for data _or_ fields
-      continue;   
+    if (odbc_num_rows($r)==0) {   // if no rows, don't go looking for data _or_ fields
+      if ($debug>0) echo "$table has no rows, skipping";
+	  exit;   
+	}
 
     // Get all the field names and store in an array $fields
     if ($maxfields>3) {
