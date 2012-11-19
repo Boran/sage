@@ -31,19 +31,21 @@ Completed sync of AUDIT_SPLIT
 require_once('config.inc');
 require_once('funcs.inc');    // common functions 
 
-$debug=0;
+$debug=0;                     // set to 1 for verbose messages
+
 // mysql destination
+/*
 $mysql['host'] = "localhost";
 $mysql['user'] = "root";
 $mysql['pass'] = "";
-$mysql['dbname'] = "sagetest";
+$mysql['dbname'] = "sagetest";*/
 
 // ----------------------------------
 
 // Open Mysql destination DB
 $myconn = mysql_connect($mysql['host'], $mysql['user'], $mysql['pass']);
 if (!$myconn)
-  die("Error connecting to the MySQL database: " . $mysql_error());
+  die("Error connecting to the MySQL database: " . mysql_error());
 if (!mysql_select_db($mysql['dbname'], $myconn))
   die("Error selecting the database: " . mysql_error());
 
@@ -66,12 +68,13 @@ $tables = array(
 // Step 2: loop though each table
 if (!empty($tables)) {
     foreach ($tables as $currentTable => $srcKeyname) {
-      echo "Table $currentTable with key $srcKeyname \n";
+      echo date("H:i:s") . " Table $currentTable ";
+	  if ($debug>0) echo " with key $srcKeyname";
       $destKeyName=$srcKeyname;  
       $destTable=$currentTable;
+      $fields=array(); $results=array();
                       
       // Step 2a: Connect to Sage and grab the source table data
-      $fields=array(); $results=array();
       sage_getTable($currentTable, $debug, $fields, $results);
       //print_r($fields);   // to show the field structure  
       //print_r($results);    // to print out the data per record
@@ -153,8 +156,9 @@ if (!empty($tables)) {
              
         }
 
-        echo "Completed sync of $currentTable \n";
+        echo " ...completed sync of $currentTable at \n";
     }
+	echo date("H:i:s"); 
 }
 
 ?>
