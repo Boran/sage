@@ -97,7 +97,7 @@ if (!empty($tables)) {
             $sql.= ", \n";
         }
         $sql.= "  PRIMARY KEY ($srcKeyname) \n"
-          .") ENGINE=innoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\n";
+          .") ENGINE=innoDB DEFAULT CHARSET=latin1 ;\n";
           // TODO: maybe some people want myisam or other encoding ?
         //print_r($sql);  
         $r = mysql_query($sql, $myconn);
