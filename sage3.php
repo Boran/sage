@@ -104,7 +104,7 @@ if (!empty($tables)) {
             $sql.= ", \n";
         }
         $sql.= "  PRIMARY KEY ($srcKeyname) \n"
-          .") ENGINE=innoDB DEFAULT CHARSET=latin1;\n";
+          .") ENGINE=innoDB DEFAULT CHARSET=latin1 ;\n";
           // TODO: maybe some people want myisam or other encoding ?
         //print_r($sql);  
         $r = mysql_query($sql, $myconn);
@@ -162,7 +162,6 @@ if (!empty($tables)) {
             //echo "\n";
              
         }
-
         echo " ...completed sync of $currentTable at \n";
 		fwrite($logf, "...completed sync of $currentTable at \n");
 
