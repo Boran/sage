@@ -32,6 +32,7 @@ require_once('config.inc');
 require_once('funcs.inc');    // common functions 
 
 $debug=0;                     // set to 1 for verbose messages
+$logf= __FILE__ . "log";      // summary log file
 
 // mysql destination
 /*
@@ -41,6 +42,8 @@ $mysql['pass'] = "";
 $mysql['dbname'] = "sagetest";*/
 
 // ----------------------------------
+$logf= fopen($logf, 'w') or die("can't open file $logf ");
+fwrite($logf, date("H:i:s") . " Start sage3.php\n");
 
 // Open Mysql destination DB
 $myconn = mysql_connect($mysql['host'], $mysql['user'], $mysql['pass']);
@@ -48,6 +51,7 @@ if (!$myconn)
   die("Error connecting to the MySQL database: " . mysql_error());
 if (!mysql_select_db($mysql['dbname'], $myconn))
   die("Error selecting the database: " . mysql_error());
+if ($debug>1) echo " connected to mysql " .$mysql['host'] . '/' .$mysql['dbname'];
 
 
 // Step 1: get list of tables
@@ -55,12 +59,13 @@ if (!mysql_select_db($mysql['dbname'], $myconn))
 //sage_getTableNames($table, $debug, $tables);  // grab a list of all tables
 // New: use specific tables that have tested, and keys defined
 $tables = array(
-    'SALES_LEDGER' => 'ACCOUNT_REF',
-    'PURCHASE_LEDGER' => 'ACCOUNT_REF',
-    'NOMINAL_LEDGER' => 'ACCOUNT_REF',
-    'TAX_CODE' => 'TAX_CODE_ID',
+    //'sales_del_addr' => 'ACCOUNT_REF',
+    'sales_ledger' => 'ACCOUNT_REF',	
+    'purchase_ledger' => 'ACCOUNT_REF',
+    'nominal_ledger' => 'ACCOUNT_REF',
+    'tax_code' => 'TAX_CODE_ID',
     'CURRENCY' => 'NUMBER',
-    'AUDIT_SPLIT' => 'TRAN_NUMBER',
+    //'audit_split' => 'TRAN_NUMBER',
  );
 //print_r($tables);  
 
@@ -69,7 +74,9 @@ $tables = array(
 if (!empty($tables)) {
     foreach ($tables as $currentTable => $srcKeyname) {
       echo date("H:i:s") . " Table $currentTable ";
-	  if ($debug>0) echo " with key $srcKeyname";
+	  fwrite($logf, date("H:i:s") . " Table $currentTable ");
+
+	  if ($debug>0) echo " with key $srcKeyname ";
       $destKeyName=$srcKeyname;  
       $destTable=$currentTable;
       $fields=array(); $results=array();
@@ -97,7 +104,7 @@ if (!empty($tables)) {
             $sql.= ", \n";
         }
         $sql.= "  PRIMARY KEY ($srcKeyname) \n"
-          .") ENGINE=innoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\n";
+          .") ENGINE=innoDB DEFAULT CHARSET=latin1;\n";
           // TODO: maybe some people want myisam or other encoding ?
         //print_r($sql);  
         $r = mysql_query($sql, $myconn);
@@ -157,8 +164,11 @@ if (!empty($tables)) {
         }
 
         echo " ...completed sync of $currentTable at \n";
+		fwrite($logf, "...completed sync of $currentTable at \n");
+
     }
-	echo date("H:i:s"); 
+	echo date("H:i:s");
+    fwrite($logf,date("H:i:s") );	
 }
 
 ?>
