@@ -1,6 +1,6 @@
 <?
 
-/** sage3.php
+/** sage3bpp.php
  *
  * Sync specific tables from sage via ODBC to a mysql database.
  *
@@ -12,7 +12,7 @@
  * tested with php 5.3.18 and Sage 50 accounts 2013.
  
 The output might be something like this:
-$ /c/php/php.exe sage3.php
+$ /c/php/php.exe sage3bpp.php
 Table SALES_LEDGER with key ACCOUNT_REF
 Completed sync of SALES_LEDGER
 Table PURCHASE_LEDGER with key ACCOUNT_REF
@@ -28,7 +28,7 @@ Completed sync of AUDIT_SPLIT
 
  */
  
-require_once('config.inc');
+require_once('config_bpp.inc');
 require_once('funcs.inc');    // common functions 
 
 $debug=0;                     // set to 1 for verbose messages
